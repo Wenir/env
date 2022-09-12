@@ -1,0 +1,134 @@
+---
+- hosts: default
+
+  roles:
+    - name: regolith
+    - name: emacs
+    - name: noisetorch
+      noisetorch_version: "v0.12.2"
+      noisetorch_checksum: "sha512:e5af9d6ce0877715382f8c542bddf0cdbc45c13507448ea742b358f8d6eb364c7461a27cb0b4904102af809572ba0f9686634aebcba44adec2f999cb6a537861"
+
+  tasks:
+    - name: Remove software
+      apt:
+        name: []
+        state: absent
+      become: true
+
+    - name: Install software
+      apt:
+        name:
+          - vlc
+          - krita
+          - clangd
+          - tigervnc-viewer
+          - konsole
+          - dconf-editor
+          - imagemagick-6.q16
+          - vim
+          - gimp
+          - screenfetch
+        state: present
+      become: true
+
+    - name: Install snap
+      snap:
+        name:
+          - telegram-desktop
+      become: true
+
+    - name: Install python modules
+      pip:
+        executable: pip3
+        name:
+          - pydot
+          - fabric
+          - psutil
+          - beancount
+          - fava
+          - fava-investor
+        state: present
+      become: true
+
+    - name: git cache password
+      git_config:
+        scope: global
+        name: credential.helper
+        value: "cache --timeout=360000"
+
+    - name: gnome settings (numlock, screen lock delay)
+      block:
+        - name: idle-delay
+          community.general.dconf:
+            key: "/org/gnome/desktop/session/idle-delay"
+            value: "uint32 1800"
+            state: present
+
+        - name: keyboard layouts
+          dconf:
+            key: "/org/gnome/desktop/input-sources/sources"
+            value: "[('xkb', 'us'), ('xkb', 'ua'), ('xkb', 'ru')]"
+            state: present
+
+        - name: numlock-state
+          dconf:
+            key: "/org/gnome/desktop/peripherals/keyboard/numlock-state"
+            value: "true"
+            state: present
+
+        - name: remember-numlock-state
+          dconf:
+            key: "/org/gnome/desktop/peripherals/keyboard/remember-numlock-state"
+            value: "true"
+            state: present
+
+        - name: locale
+          dconf:
+            key: "/system/locale/region"
+            value: "'en_CA.UTF-8'"
+            state: present
+
+    - name: source code pro
+      block:
+        - name: check if they exist
+          stat:
+            path: /usr/share/fonts/opentype/source-code-pro
+          register: source_code_pro_stat_result
+          become: true
+
+        - name: Create a directory
+          file:
+            path: /usr/share/fonts/opentype/source-code-pro
+            state: directory
+          become: true
+
+        - name: Download the fonts
+          get_url:
+            url: "{{ path }}/SourceCodePro-{{ item }}.otf?raw=true"
+            dest: "/usr/share/fonts/opentype/source-code-pro/SourceCodePro-{{ item }}.otf"
+          vars:
+            path: https://github.com/adobe-fonts/source-code-pro/blob/29fdb884c6e9dc2a312f4a5e2bb3b2dad2350777/OTF
+          with_items:
+            - Black
+            - BlackIt
+            - Bold
+            - BoldIt
+            - ExtraLight
+            - ExtraLightIt
+            - It
+            - Light
+            - LightIt
+            - Medium
+            - MediumIt
+            - Regular
+            - Semibold
+            - SemiboldIt
+          when: not source_code_pro_stat_result.stat.exists
+          become: true
+
+        - name: reload fonts cache
+          command: fc-cache -f -v
+          become: true
+          when: not source_code_pro_stat_result.stat.exists
+
+  handlers: []

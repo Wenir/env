@@ -1,0 +1,39 @@
+---
+# tasks file for emacs
+
+- name: Install packages
+  apt:
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+  with_items:
+    - name:
+        - emacs
+        - git
+        - libtool-bin
+      state: present
+  become: true
+
+- name: install spacemacs
+  git:
+    repo: https://github.com/syl20bnr/spacemacs
+    dest: ~/.emacs.d
+    update: false
+    clone: true
+    single_branch: yes
+    version: develop
+
+- name: remove .spacemacs
+  file:
+    path: ~/.spacemacs
+    state: "absent"
+
+- name: copy wenir-config.el for emacs
+  copy:
+    src: wenir-config.el
+    dest: ~/.spacemacs.d/
+
+- name: copy init.el for emacs
+  copy:
+    src: init.el
+    dest: ~/.spacemacs.d/
+    force: no

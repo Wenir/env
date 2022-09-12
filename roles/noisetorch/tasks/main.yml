@@ -1,0 +1,28 @@
+---
+# tasks file for noisetorch
+- name: Create directory for downloaded file
+  file:
+    path: ~/.ansible/noisetorch/
+    state: directory
+
+- name: Download NoiseTorch
+  get_url:
+    url: "https://github.com/noisetorch/NoiseTorch/releases/download/{{ noisetorch_version }}/NoiseTorch_x64_{{ noisetorch_version }}.tgz"
+    dest: ~/.ansible/noisetorch/
+    checksum: "{{ noisetorch_checksum }}"
+
+- name: Unarchive the app
+  unarchive:
+    src: "~/.ansible/noisetorch/NoiseTorch_x64_{{ noisetorch_version }}.tgz"
+    dest: ~/
+    remote_src: yes
+
+- name: Update icon cache
+  command: gtk-update-icon-cache
+
+- name: Set capabilities for noisetorch
+  capabilities:
+    path: "{{ ansible_env.HOME }}/.local/bin/noisetorch"
+    capability: cap_sys_resource+ep
+    state: present
+  become: true

@@ -1,0 +1,5 @@
+---
+# handlers file for regolith
+
+- name: refresh_regolith
+  command: regolith-look refresh

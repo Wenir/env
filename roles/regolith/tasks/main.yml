@@ -1,0 +1,61 @@
+---
+# tasks file for regolith
+
+- name: Check that the regolith-archive-keyring.gpg exists
+  stat:
+    path: /usr/share/keyrings/regolith-archive-keyring.gpg
+  register: regolith_archive_keyring_result
+  become: true
+
+- name: Create the file, if it doesnt exist already
+  shell: >
+    wget -qO - https://regolith-desktop.org/regolith.key
+    | gpg --dearmor
+    | sudo tee /usr/share/keyrings/regolith-archive-keyring.gpg > /dev/null
+  when: not regolith_archive_keyring_result.stat.exists
+  become: true
+
+- name: Creating a file with content
+  copy:
+    dest: "/etc/apt/sources.list.d/regolith.list"
+    content: >
+      deb [arch=amd64 signed-by=/usr/share/keyrings/regolith-archive-keyring.gpg]
+      https://regolith-desktop.org/release-ubuntu-jammy-amd64 jammy main
+  become: true
+
+- name: Install packages
+  apt:
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+  with_items:
+    - name:
+        - regolith-desktop
+        - "regolith-look-*"
+        - regolith-compositor-picom-glx
+        - i3xrocks-battery
+        - i3xrocks-key-indicator
+        - i3xrocks-keyboard-layout
+        - i3xrocks-memory
+        - i3xrocks-microphone
+        - i3xrocks-rofication
+        - i3xrocks-temp
+        - i3xrocks-volume
+      state: present
+
+    - name: regolith-i3-gnome
+      state: absent
+  become: true
+  notify: "regolith : refresh_regolith"
+
+- name: add missing keybinds
+  copy:
+    src: i3config
+    dest: /usr/share/regolith/i3/config.d/99-wenir
+  become: true
+  notify: "regolith : refresh_regolith"
+
+- name: copy Xresources for regolith
+  copy:
+    src: Xresources
+    dest: ~/.config/regolith2/
+  notify: "regolith : refresh_regolith"

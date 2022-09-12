@@ -1,0 +1,19 @@
+
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+bindsym $mod+x move workspace to output right
+## Modify // Settings // <> c ##
+set_from_resource $i3-wm.binding.settings i3-wm.binding.settings c
+set_from_resource $i3-wm.program.settings i3-wm.program.settings gnome-control-center --class=floating_window
+bindsym $mod+$i3-wm.binding.settings exec $i3-wm.program.settings
+
+# Quick switch back and forth between two workspaces
+bindsym $mod+z workspace back_and_forth
+# Move windows betwen this ^^ two worspaces; and go with it
+bindsym $mod+Shift+z move container to workspace back_and_forth; workspace back_and_forth
+
+# If a window is activated, e.g., via google-chrome www.google.com, it may request to take focus. Since this may not preferable, different reactions can be configured.
+focus_on_window_activation smart
+
+mouse_warping none

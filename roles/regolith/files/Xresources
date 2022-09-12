@@ -1,0 +1,82 @@
+i3-wm.gaps.focus_follows_mouse: yes
+i3-wm.binding.launcher.app: d
+i3-wm.binding.launcher.cmd: Shift+d
+i3-wm.binding.launcher.window: Ctrl+d
+i3-wm.binding.focus_child: q
+i3-wm.binding.float_toggle: space
+i3-wm.binding.focus_toggle: space
+i3-wm.workspace.auto_back_and_forth: yes
+
+i3-wm.client.unfocused.color.background: "#292b30"
+
+i3-wm.font:	pango:JetBrains Mono Medium 9
+
+! i3-wm.client.focused.color.background: color_base00
+
+rofi.color-enabled: true
+rofi.color-window: #273238, #273238, #1e2529
+rofi.color-normal: #273238, #c1c1c1, #273238, #394249, #ffffff
+rofi.color-active: #273238, #80cbc4, #273238, #394249, #80cbc4
+rofi.color-urgent: #273238, #ff1844, #273238, #394249, #ff1844
+
+
+
+URxvt.scrollstyle: plain
+URxvt.geometry: 104x30
+URxvt*termName: rxvt-unicode-256color
+URxvt*saveLines: 65535
+URxvt.scrollBar_right: true
+URxvt.scrollBar: false
+URxvt.secondaryScreen: 1
+URxvt.secondaryScroll: 0
+URxvt.secondaryWheel:     1
+! URxvt.transparent:   true
+! URxvt.shading:       20
+URxvt*.depth:        32
+URxvt*background: rgba:0000/0000/0200/e800
+URxvt.font:               xft:typeface_terminal:size=15
+URxvt.letterSpace:        -1
+! URxvt.font:               xft:Consolas:size=10
+! URxvt.letterSpace:        0
+! URxvt.font:               xft:Cousine\ for\ Powerline:size=12
+! URxvt.letterSpace:        -1
+URxvt*scrollTtyOutput:    false
+URxvt*scrollWithBuffer:   true
+URxvt*scrollTtyKeypress:  true
+URxvt.perl-ext-common:    default,matcher,new-window
+
+! Clipboard access
+URxvt*iso14755:           false
+
+! Clickable links
+URxvt.url-launcher:       /usr/bin/xdg-open
+URxvt.matcher.button:     1
+
+! Ctrl+Shift+N to create new window
+URxvt.keysym.Control-Shift-N: perl:new-window
+
+! Background color
+! URxvt*background: black
+
+! Цвет шрифта
+URxvt*foreground: white
+
+! Другие цвета
+URxvt*color0: black
+URxvt*color1: red3
+URxvt*color2: green3
+URxvt*color3: yellow3
+URxvt*color4: blue2
+URxvt*color5: magenta3
+URxvt*color6: cyan3
+URxvt*color7: gray90
+URxvt*color8: grey50
+URxvt*color9: red
+URxvt*color10: green
+URxvt*color11: yellow
+URxvt*color12: blue
+URxvt*color13: magenta
+URxvt*color14: cyan
+URxvt*color15: white
+
+
