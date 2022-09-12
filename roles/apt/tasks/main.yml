@@ -1,0 +1,20 @@
+---
+# tasks file for apt
+
+- name: Update repositories cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  become: true
+
+- name: Update all packages to the latest version
+  apt:
+    upgrade: dist
+  become: true
+
+- name: install pip
+  apt:
+    name:
+      - python3-pip
+    state: present
+  become: true

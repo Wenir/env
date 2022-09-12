@@ -1,0 +1,73 @@
+---
+# tasks file for dev_env
+
+- name: install tools
+  apt:
+    name:
+      - git
+      - meld
+      - silversearcher-ag
+      - graphviz
+      - valgrind
+      - redis
+      - jq
+      - g++
+      - neofetch
+      - vagrant
+      - virtualbox-qt
+      - python3-pip
+    state: present
+  become: true
+
+- name: setup conan
+  block:
+    - name: pip install conan
+      pip:
+        name: conan
+      become: true
+
+    - name: check if profile exist
+      command: conan profile list
+      register: conan_profiles
+      changed_when: false
+
+    - debug:
+        var: "'default' not in {{ conan_profiles.stdout_lines }}"
+
+    - name: create default profile
+      command: conan profile new default --detect
+      when: "'default' not in {{ conan_profiles.stdout_lines }}"
+
+    - name: get libcxx version
+      command: conan profile get "settings.compiler.libcxx" default
+      register: conan_libcxx
+      changed_when: false
+
+    - name: set libcxx
+      command: conan profile update settings.compiler.libcxx=libstdc++11 default
+      when: "'libstdc++11' not in {{ conan_libcxx.stdout_lines }}"
+
+- name: setup cmake
+  block:
+    - name: pip install cmake
+      pip:
+        name: cmake
+
+- name: install libs
+  apt:
+    name:
+      - libhiredis-dev
+      - libmysqlclient-dev
+      - libboost-all-dev
+      - libzmq3-dev
+      - libcurl4-openssl-dev
+    state: present
+  become: true
+
+- name: install checkers
+  apt:
+    name:
+      - cppcheck
+      - clang-tidy
+    state: present
+  become: true
