@@ -1,6 +1,7 @@
 ---
-- hosts: default
+- import_playbook: rpp-env/main.yml
 
+- hosts: default
   roles:
     - name: regolith
     - name: emacs
@@ -28,6 +29,7 @@
           - vim
           - gimp
           - screenfetch
+          - yt-dlp
         state: present
       become: true
 
