@@ -16,13 +16,12 @@
     src: "~/.ansible/noisetorch/NoiseTorch_x64_{{ noisetorch_version }}.tgz"
     dest: ~/
     remote_src: yes
-
-- name: Update icon cache
-  command: gtk-update-icon-cache
+  notify:
+    - update_icon_cache
 
 - name: Set capabilities for noisetorch
   capabilities:
     path: "{{ ansible_env.HOME }}/.local/bin/noisetorch"
-    capability: cap_sys_resource+ep
+    capability: cap_sys_resource=ep
     state: present
   become: true

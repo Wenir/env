@@ -1,2 +1,3 @@
 ---
-# handlers file for noisetorch
+- name: update_icon_cache
+  command: gtk-update-icon-cache
