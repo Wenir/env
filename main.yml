@@ -25,11 +25,13 @@
           - tigervnc-viewer
           - konsole
           - dconf-editor
+          - dsniff
           - imagemagick-6.q16
           - vim
           - gimp
           - screenfetch
           - yt-dlp
+          - tree
         state: present
       become: true
 

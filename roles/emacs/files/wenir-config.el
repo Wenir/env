@@ -60,7 +60,7 @@ This function should only modify configuration layer settings."
      multiple-cursors
      ;; python
      ;; markdown
-	 org
+     (org :variables org-src-tab-acts-natively nil)
 ;;	 (lsp-c-c++ :variables
 ;;				;;cquery-executable (file-truename "~/build/cquery/release/release/bin/cquery")
 ;;				;;cquery-extra-init-params '(:extraClangArgs " " :cacheFormat "msgpack"))
@@ -87,6 +87,7 @@ This function should only modify configuration layer settings."
      ;; tabbar
      imenu-list
      graphviz
+     groovy
      plantuml
      google-play-music
      scheme
